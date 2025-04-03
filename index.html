@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImaginAI - Next-Gen AI Image Generation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Enhanced Navbar with Dropdown -->
+    <header class="navbar">
+        <div class="brand-container">
+            <img src="download.jpg" alt="ImaginAI Logo" class="brand-logo">
+            <h1 class="brand-title">ImaginAI</h1>
+        </div>
+        
+        <nav class="nav-controls">
+            <div class="user-menu">
+                <button class="nav-btn auth-btn" id="user-menu-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="user-status">Guest</span>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+            <button class="nav-btn theme-toggle" aria-label="Toggle theme">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon hidden"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="creator-container">
+        <section class="creator-header">
+            <h2 class="main-title">Transform Words into Visual Masterpieces</h2>
+            <div class="prompt-examples">
+                <span class="example-tag">Try: </span>
+                <button class="example-prompt">Surreal landscape with floating islands</button>
+                <button class="example-prompt">Cyberpunk city at neon-lit night</button>
+                <button class="example-prompt">Portrait of a steampunk inventor</button>
+            </div>
+        </section>
+
+        <!-- Enhanced Creation Interface -->
+        <div class="creation-panel">
+            <form class="creation-form" id="generation-form">
+                <!-- Prompt Input Section -->
+                <div class="prompt-section">
+                    <div class="input-header">
+                        <label class="input-label">Describe Your Vision</label>
+                        <span class="char-counter"><span id="char-count">0</span>/500</span>
+                    </div>
+                    <div class="prompt-container">
+                        <textarea 
+                            class="prompt-input" 
+                            id="prompt-input"
+                            placeholder="A majestic dragon soaring over a medieval castle at sunset..."
+                            maxlength="500"
+                            rows="4"
+                        ></textarea>
+                        <div class="prompt-tools">
+                            <button type="button" class="tool-btn randomize-btn" title="Random prompt">
+                                <i class="fa-solid fa-shuffle"></i>
+                            </button>
+                            <button type="button" class="tool-btn mic-btn" title="Voice input">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Controls Grid -->
+                <div class="control-grid">
+                    <!-- Model Selection -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            AI Model
+                            <i class="fas fa-info-circle" title="Choose between different generation models"></i>
+                        </label>
+                        <select class="model-select">
+                            <option value="flux-2">FLUX-2 (Advanced Creative)</option>
+                            <option value="sd-xl">Stable Diffusion XL Turbo</option>
+                            <option value="open-journey-v5">OpenJourney v5</option>
+                            <option value="realvision-v3">RealVision v3 (Photorealistic)</option>
+                        </select>
+                    </div>
+
+                    <!-- Output Configuration -->
+                    <div class="control-group">
+                        <label class="control-label">Output Settings</label>
+                        <div class="output-controls">
+                            <div class="setting-group">
+                                <label>Quantity</label>
+                                <select class="quantity-select">
+                                    <option value="1">1 Image</option>
+                                    <option value="4">4 Images</option>
+                                    <option value="9">9 Images</option>
+                                </select>
+                            </div>
+                            <div class="setting-group">
+                                <label>Aspect Ratio</label>
+                                <select class="aspect-select">
+                                    <option value="1:1">Square (1:1)</option>
+                                    <option value="16:9">Widescreen (16:9)</option>
+                                    <option value="9:16">Portrait (9:16)</option>
+                                    <option value="21:9">Cinematic (21:9)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Style Modifiers -->
+                    <div class="control-group">
+                        <label class="control-label">Art Style</label>
+                        <div class="style-presets">
+                            <button type="button" class="style-btn active">
+                                <i class="fas fa-camera"></i> Photorealistic
+                            </button>
+                            <button type="button" class="style-btn">
+                                <i class="fas fa-paint-brush"></i> Digital Art
+                            </button>
+                            <button type="button" class="style-btn">
+                                <i class="fas fa-gamepad"></i> Anime
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generation Actions -->
+                <div class="action-row">
+                    <div class="advanced-options">
+                        <div class="option-group">
+                            <input type="checkbox" id="private-toggle" class="toggle-switch">
+                            <label for="private-toggle">Private Generation</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="hq-toggle" class="toggle-switch" checked>
+                            <label for="hq-toggle">High Quality</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="generate-btn">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Generate Images (Ctrl+Enter)
+                    </button>
+                </div>
+            </form>
+
+            <!-- Enhanced Gallery Section -->
+            <section class="gallery-section">
+                <div class="gallery-header">
+                    <h3 class="gallery-title">Your Creations</h3>
+                    <div class="gallery-controls">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Recent</button>
+                        <button class="filter-btn">Favorites</button>
+                    </div>
+                </div>
+                
+                <div class="masonry-grid">
+                    <!-- Loading State Card -->
+               
+                    <!-- Sample Creation Card -->
+                    <article class="creation-card">
+                        <img src="OIP.jpg" alt="Mystical forest with glowing creatures" loading="lazy">
+                        <div class="card-overlay">
+                            <p class="prompt-preview">A mystical forest with glowing creatures under a purple sky...</p>
+                            <div class="card-actions">
+                                <button class="action-btn favorite-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn download-btn">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <button class="action-btn share-btn">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="creation-card">
+                        <img src="18dc413a-0674-42a7-b323-fb30df200e71.avif" alt="Surreal landscape with floating island" loading="lazy">
+                        <div class="card-overlay">
+                            <p class="prompt-preview">Surreal landscape with floating islands...</p>
+                            <div class="card-actions">
+                                <button class="action-btn favorite-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn download-btn">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <button class="action-btn share-btn">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="creation-card">
+                        <img src="OIP.jpg" alt="Mystical forest with glowing creatures" loading="lazy">
+                        <div class="card-overlay">
+                            <p class="prompt-preview">A mystical forest with glowing creatures under a purple sky...</p>
+                            <div class="card-actions">
+                                <button class="action-btn favorite-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn download-btn">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <button class="action-btn share-btn">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="creation-card">
+                        <img src="OIP.jpg" alt="Mystical forest with glowing creatures" loading="lazy">
+                        <div class="card-overlay">
+                            <p class="prompt-preview">A mystical forest with glowing creatures under a purple sky...</p>
+                            <div class="card-actions">
+                                <button class="action-btn favorite-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn download-btn">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <button class="action-btn share-btn">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- More cards... -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>ImaginAI</h4>
+                <nav class="footer-nav">
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">API</a>
+                    <a href="#">Privacy</a>
+                </nav>
+            </div>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <nav class="footer-nav">
+                    <a href="#">Gallery</a>
+                    <a href="#">Challenges</a>
+                    <a href="#">Discord</a>
+                    <a href="#">Documentation</a>
+                </nav>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 ImaginAI. All rights reserved.</p>
+        </div>
+    </footer>
+<script src="script.js"></script>
+</body>
+</html>

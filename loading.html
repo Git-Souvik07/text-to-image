@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImaginAI - Next-Gen AI Image Generation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      .navbar {
+        background-color: #fff;
+        color: #222;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .brand-container {
+        display: flex;
+        align-items: center;
+      }
+      .brand-logo {
+        width: 40px;
+        margin-right: 1rem;
+      }
+      .brand-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      .nav-controls {
+        display: flex;
+        align-items: center;
+      }
+      .nav-btn {
+        background-color: transparent;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-left: 1rem;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #444;
+      }
+      .nav-btn:hover {
+        color: #222;
+      }
+      .auth-btn {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background-color: #007bff;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+      }
+      .auth-btn:hover {
+        background-color: #0056b3;
+      }
+      .user-menu {
+        position: relative;
+      }
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        display: none;
+        min-width: 180px;
+      }
+      .user-dropdown.show {
+        display: block;
+      }
+      .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        display: block;
+        color: #333;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+      .dropdown-item:hover {
+        background-color: #f0f0f0;
+      }
+      .dropdown-divider {
+        height: 1px;
+        background-color: #ddd;
+        margin: 0.5rem 0;
+      }
+      .theme-toggle {
+        padding: 0.5rem;
+        border-radius: 5px;
+      }
+      .theme-toggle:hover {
+        background-color: #f0f0f0;
+      }
+      .hidden {
+        display: none;
+      }
+      .creator-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        text-align: center;
+      }
+      .main-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+      }
+      .prompt-examples {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 2rem;
+      }
+      .example-tag {
+        margin-right: 1rem;
+        font-size: 1.1rem;
+        color: #7f8c8d;
+      }
+      .example-prompt {
+        background-color: #e0f7fa;
+        color: #00897b;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin: 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        border: none;
+      }
+      .example-prompt:hover {
+        background-color: #b2ebf2;
+      }
+      .creation-panel {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+      .creation-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .prompt-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .input-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .input-label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+      .char-counter {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+      }
+      #prompt-input {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        resize: none;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      #prompt-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+      .prompt-tools {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
+      .tool-btn {
+        background-color: transparent;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-left: 0.5rem;
+      }
+      .tool-btn:hover {
+        color: #34495e;
+      }
+      .control-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .control-label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .model-select, .quantity-select, .aspect-select {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .output-controls {
+        display: flex;
+        gap: 1rem;
+      }
+      .setting-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .style-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .style-btn {
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .style-btn:hover {
+        background-color: #ddd;
+      }
+      .style-btn.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+      .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+      }
+      .advanced-options {
+        display: flex;
+        gap: 1rem;
+      }
+      .option-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 45px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 24px;
+        transition: .4s;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: .4s;
+      }
+      input:checked + .slider {
+        background-color: #007bff;
+      }
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+      .generate-btn {
+        background-color: #2ecc71;
+        color: #fff;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .generate-btn:hover {
+        background-color: #218838;
+      }
+      .gallery-section {
+        margin-top: 2rem;
+      }
+      .gallery-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .gallery-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .gallery-controls {
+        display: flex;
+        gap: 1rem;
+      }
+      .filter-btn {
+        background-color: transparent;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #7f8c8d;
+      }
+      .filter-btn:hover {
+        color: #34495e;
+      }
+      .filter-btn.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+      .masonry-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+      .creation-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+      }
+      .creation-card img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+      }
+      .card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 1rem;
+        opacity: 0;
+        transition: .3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+      }
+      .creation-card:hover .card-overlay {
+        opacity: 1;
+      }
+      .prompt-preview {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+      }
+      .action-btn {
+        background-color: transparent;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #fff;
+      }
+      .action-btn:hover {
+        color: #f0f0f0;
+      }
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .generation-status {
+        margin-bottom: 1rem;
+        width: 100%;
+      }
+      .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #007bff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .progress-bar {
+        background-color: #f0f0f0;
+        height: 10px;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+      .progress-fill {
+        background-color: #007bff;
+        height: 10px;
+        border-radius: 5px;
+        width: 0%;
+        transition: width 0.4s ease-in-out;
+      }
+      .main-footer {
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+      }
+      .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 2rem;
+        margin-bottom: 1rem;
+      }
+      .footer-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .footer-section h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      .footer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .footer-nav a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+      .footer-nav a:hover {
+        color: #f0f0f0;
+      }
+      .footer-bottom {
+        border-top: 1px solid #444;
+        padding-top: 1rem;
+        font-size: 0.9rem;
+        color: #aaa;
+      }
+      @media (max-width: 768px) {
+        .control-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .output-controls {
+          flex-direction: column;
+        }
+        .action-row {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .footer-content {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+      @media (max-width: 480px) {
+        .navbar {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+        .brand-title {
+          font-size: 1.2rem;
+        }
+        .control-grid {
+          grid-template-columns: 1fr;
+        }
+        .prompt-examples {
+          flex-direction: column;
+        }
+        .example-tag {
+          margin-right: 0;
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
+</head>
+<body>
+
+    
+
+<header class="navbar">
+        <div class="brand-container">
+            <img src="download.jpg" alt="ImaginAI Logo" class="brand-logo">
+            <h1 class="brand-title">ImaginAI</h1>
+        </div>
+        
+        <nav class="nav-controls">
+            <div class="user-menu">
+                <button class="nav-btn auth-btn" id="user-menu-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="user-status">Guest</span>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+            <button class="nav-btn theme-toggle" aria-label="Toggle theme">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon hidden"></i>
+            </button>
+        </nav>
+    </header>
+
+    
+
+<main class="creator-container" id="main-content">
+        <section class="creator-header">
+            <h1 class="main-title">Transform Words into Visual Masterpieces</h1>
+            <p class="page-description">Describe your vision and let AI create stunning images.</p>
+            <div class="prompt-examples">
+                <span class="example-tag">Try: </span> 
+                <button class="example-prompt">Surreal landscape with floating islands</button>
+                <button class="example-prompt">Cyberpunk city at neon-lit night</button>
+                <button class="example-prompt">Portrait of a steampunk inventor</button>
+            </div>
+        </section>
+
+        
+
+<div class="creation-panel">
+            <form class="creation-form" id="generation-form">
+                
+
+<div class="prompt-section">
+                    <div class="input-header">
+                        <label class="input-label">Describe Your Vision</label>
+                        <span class="char-counter"><span id="char-count">0</span>/500</span>
+                    </div>
+                    <div class="prompt-container">
+                        <textarea 
+                            class="prompt-input" 
+                            id="prompt-input"
+                            placeholder="A majestic dragon soaring over a medieval castle at sunset..."
+                            maxlength="500"
+                            rows="4"
+                        ></textarea>
+                        <div class="prompt-tools">
+                            <button type="button" class="tool-btn randomize-btn" title="Random prompt">
+                                <i class="fa-solid fa-shuffle"></i>
+                            </button>
+                            <button type="button" class="tool-btn mic-btn" title="Voice input">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+<div class="control-grid">
+                    
+
+<div class="control-group">
+                        <label class="control-label">
+                            AI Model
+                            <i class="fas fa-info-circle" title="Choose between different generation models"></i>
+                        </label>
+                        <select class="model-select">
+                            <option value="flux-2">FLUX-2 (Advanced Creative)</option>
+                            <option value="sd-xl">Stable Diffusion XL Turbo</option>
+                            <option value="open-journey-v5">OpenJourney v5</option>
+                            <option value="realvision-v3">RealVision v3 (Photorealistic)</option>
+                        </select>
+                    </div>
+
+                    
+
+<div class="control-group">
+                        <label class="control-label">Output Settings</label>
+                        <div class="output-controls">
+                            <div class="setting-group">
+                                <label>Quantity</label>
+                                <select class="quantity-select">
+                                    <option value="1">1 Image</option>
+                                    <option value="4" selected>4 Images</option>
+                                    <option value="9">9 Images</option>
+                                </select>
+                            </div>
+                            <div class="setting-group">
+                                <label>Aspect Ratio</label>
+                                <select class="aspect-select">
+                                    <option value="1:1">Square (1:1)</option>
+                                    <option value="16:9">Widescreen (16:9)</option>
+                                    <option value="9:16">Portrait (9:16)</option>
+                                    <option value="21:9">Cinematic (21:9)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+<div class="control-group">
+                        <label class="control-label">Art Style</label>
+                        <div class="style-presets">
+                            <button type="button" class="style-btn active">
+                                <i class="fas fa-camera"></i> Photorealistic
+                            </button>
+                            <button type="button" class="style-btn">
+                                <i class="fas fa-paint-brush"></i> Digital Art
+                            </button>
+                            <button type="button" class="style-btn">
+                                <i class="fas fa-gamepad"></i> Anime
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+<div class="action-row">
+                    <div class="advanced-options">
+                        <div class="option-group">
+                            <input type="checkbox" id="private-toggle" class="toggle-switch">
+                            <label for="private-toggle">Private Generation</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="hq-toggle" class="toggle-switch" checked>
+                            <label for="hq-toggle">High Quality</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="generate-btn">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Generate Images (Ctrl+Enter)
+                    </button>
+                </div>
+            </form>
+
+            
+
+<section class="gallery-section" id="gallery">
+                <div class="gallery-header">
+                    <h3 class="gallery-title">Your Creations</h3>
+                    <div class="gallery-controls">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Recent</button>
+                        <button class="filter-btn">Favorites</button>
+                    </div>
+                </div>
+                
+                <div class="masonry-grid" id="image-gallery-cont
